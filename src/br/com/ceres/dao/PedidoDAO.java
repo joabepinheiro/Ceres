@@ -14,11 +14,11 @@ import java.util.List;
 
 public class PedidoDAO extends AbstractDAO{
     
-    private static final String DELETE = "DELETE FROM caixa WHERE id=?";
-    private static final String FIND_BY_ID = "SELECT * FROM caixa WHERE id=?";
-    private static final String FIND_ALL = "SELECT * FROM caixa ORDER BY id";
-    private static final String INSERT = "INSERT INTO caixa (aberto_em, fechado_em, entrada_dinheiro, entrada_cartao_debito, entrada_cartao_credito, entrada_cheque, total_entrada, saida_dinheiro, saida_cheque, saldo_inicial, saldo_final, observacao, funcionario_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE caixa SET aberto_em=?, fechado_em=?, entrada_dinheiro=?, entrada_cartao_debito=?, entrada_cartao_credito=?, entrada_cheque=?, total_entrada=?, saida_dinheiro=?, saida_cheque=?, saldo_inicial=?, saldo_final=?, observacao=?, funcionario_id=? WHERE id=?";
+    private static final String DELETE = "DELETE FROM pedido WHERE id=?";
+    private static final String FIND_BY_ID = "SELECT * FROM pedido WHERE id=?";
+    private static final String FIND_ALL = "SELECT * FROM pedido ORDER BY id";
+    private static final String INSERT = "INSERT INTO pedido (aberto_em, fechado_em, entrada_dinheiro, entrada_cartao_debito, entrada_cartao_credito, entrada_cheque, total_entrada, saida_dinheiro, saida_cheque, saldo_inicial, saldo_final, observacao, funcionario_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE pedido SET aberto_em=?, fechado_em=?, entrada_dinheiro=?, entrada_cartao_debito=?, entrada_cartao_credito=?, entrada_cheque=?, total_entrada=?, saida_dinheiro=?, saida_cheque=?, saldo_inicial=?, saldo_final=?, observacao=?, funcionario_id=? WHERE id=?";
  
     public void inserir(Caixa caixa ){
         try {
