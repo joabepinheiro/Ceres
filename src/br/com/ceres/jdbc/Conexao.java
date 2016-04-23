@@ -1,4 +1,3 @@
-
 package br.com.ceres.jdbc;
 
 import java.sql.Connection;
