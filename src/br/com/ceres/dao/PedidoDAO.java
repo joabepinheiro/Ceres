@@ -1,7 +1,10 @@
 package br.com.ceres.dao;
 
 import br.com.ceres.bean.Caixa;
+import br.com.ceres.bean.Endereco;
 import br.com.ceres.bean.Funcionario;
+import br.com.ceres.bean.Mesa;
+import br.com.ceres.bean.Pedido;
 import br.com.ceres.bean.Usuario;
 import br.com.ceres.gui.Painel;
 import br.com.ceres.sessao.Sessao;
@@ -14,28 +17,30 @@ import java.util.List;
 
 public class PedidoDAO extends AbstractDAO{
     
-    private static final String DELETE = "DELETE FROM pedido WHERE id=?";
-    private static final String FIND_BY_ID = "SELECT * FROM pedido WHERE id=?";
-    private static final String FIND_ALL = "SELECT * FROM pedido ORDER BY id";
-    private static final String INSERT = "INSERT INTO pedido (aberto_em, fechado_em, entrada_dinheiro, entrada_cartao_debito, entrada_cartao_credito, entrada_cheque, total_entrada, saida_dinheiro, saida_cheque, saldo_inicial, saldo_final, observacao, funcionario_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE pedido SET aberto_em=?, fechado_em=?, entrada_dinheiro=?, entrada_cartao_debito=?, entrada_cartao_credito=?, entrada_cheque=?, total_entrada=?, saida_dinheiro=?, saida_cheque=?, saldo_inicial=?, saldo_final=?, observacao=?, funcionario_id=? WHERE id=?";
+    private static final String DELETE      = "DELETE FROM pedido WHERE id=?";
+    private static final String FIND_BY_ID  = "SELECT * FROM pedido WHERE id=?";
+    private static final String FIND_ALL    = "SELECT * FROM pedido ORDER BY id";
+    private static final String INSERT      = "INSERT INTO pedido (valor_total_produtos, valor_entrega, valor_total, total_pago, troco, tipo, forma_de_pagamento, status, funcionario_id, cliente_id, aberto_em, fechado_em, mesa_id, endereco_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE      = "UPDATE pedido SET valor_total_produtos=?, valor_entrega=?, valor_total=?, total_pago=?, troco=?, tipo=?, forma_de_pagamento=?, status=?, funcionario_id=?, cliente_id=?, aberto_em=?, fechado_em=?, mesa_id=?, endereco_id=? WHERE id=?";
  
-    public void inserir(Caixa caixa ){
+    public void inserir(Pedido pedido ){
         try {
             try (PreparedStatement ps = conexao.prepareStatement(INSERT)) {
-                ps.setDate(1, new java.sql.Date(caixa.getAbertoEm().getTime()));
-                ps.setDate(2, new java.sql.Date(caixa.getFechadoEm().getTime()));
-                ps.setFloat(3, caixa.getEntradaDinheiro());
-                ps.setFloat(4, caixa.getEntradaCartaoDebito());
-                ps.setFloat(5, caixa.getEntradaCartaoCredito());
-                ps.setFloat(6, caixa.getEntradaCheque());
-                ps.setFloat(7, caixa.getTotalEntrada());
-                ps.setFloat(8, caixa.getSaidaDinheiro());
-                ps.setFloat(9, caixa.getSaidaCheque());
-                ps.setFloat(10, caixa.getSaldoInicial());
-                ps.setFloat(11, caixa.getSaldoFinal());
-                ps.setString(12, caixa.getObservacao());
-                ps.setObject(13, caixa.getFuncionario());
+     
+                ps.setFloat(1, pedido.getValorTotalProdutos());
+                ps.setFloat(2, pedido.getValorEntrega());
+                ps.setFloat(3, pedido.getValorTotal());
+                ps.setFloat(4, pedido.getTotalPago());
+                ps.setFloat(5, pedido.getTroco());
+                ps.setString(6, pedido.getTipo());
+                ps.setString(7, pedido.getFormaDePagamento());
+                ps.setString(8, pedido.getStatus());
+                ps.setObject(9, pedido.getFuncionario());
+                ps.setObject(10, pedido.getCliente());
+                ps.setDate(11, pedido.getSqlDateAbertoEm());
+                ps.setDate(12, pedido.getSqlDateFechadoEm());
+                ps.setObject(13, pedido.getMesa());
+                ps.setObject(14, pedido.getEndereco());
                 
                 ps.execute();
             }
@@ -44,34 +49,35 @@ public class PedidoDAO extends AbstractDAO{
         }
     }
     
-    public void atualizar(Caixa caixa){
+    public void atualizar(Pedido pedido){
         try {
             try (PreparedStatement ps = conexao.prepareStatement(UPDATE)) {
-                ps.setDate(1, new java.sql.Date(caixa.getAbertoEm().getTime()));
-                ps.setDate(2, new java.sql.Date(caixa.getFechadoEm().getTime()));
-                ps.setFloat(3, caixa.getEntradaDinheiro());
-                ps.setFloat(4, caixa.getEntradaCartaoDebito());
-                ps.setFloat(5, caixa.getEntradaCartaoCredito());
-                ps.setFloat(6, caixa.getEntradaCheque());
-                ps.setFloat(7, caixa.getTotalEntrada());
-                ps.setFloat(8, caixa.getSaidaDinheiro());
-                ps.setFloat(9, caixa.getSaidaCheque());
-                ps.setFloat(10, caixa.getSaldoInicial());
-                ps.setFloat(11, caixa.getSaldoFinal());
-                ps.setString(12, caixa.getObservacao());
-                ps.setObject(13, caixa.getFuncionario());
+                ps.setFloat(1, pedido.getValorTotalProdutos());
+                ps.setFloat(2, pedido.getValorEntrega());
+                ps.setFloat(3, pedido.getValorTotal());
+                ps.setFloat(4, pedido.getTotalPago());
+                ps.setFloat(5, pedido.getTroco());
+                ps.setString(6, pedido.getTipo());
+                ps.setString(7, pedido.getFormaDePagamento());
+                ps.setString(8, pedido.getStatus());
+                ps.setObject(9, pedido.getFuncionario());
+                ps.setObject(10, pedido.getCliente());
+                ps.setDate(11, pedido.getSqlDateAbertoEm());
+                ps.setDate(12, pedido.getSqlDateFechadoEm());
+                ps.setObject(13, pedido.getMesa());
+                ps.setObject(14, pedido.getEndereco());
                 
                 ps.executeUpdate();
             }
-            System.out.println("Caixa com id " + caixa.getId() + " foi atualizado com sucesso: " + caixa.toString());
+            System.out.println("pedido com id " + pedido.getId() + " foi atualizado com sucesso: " + pedido.toString());
  
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
     
-    public List<Caixa> listar(){
-        List<Caixa> caixas = new ArrayList<>();
+    public List<Pedido> listar(){
+        List<Pedido> pedidos = new ArrayList<>();
 
         try {
             ResultSet resultado;
@@ -80,23 +86,25 @@ public class PedidoDAO extends AbstractDAO{
                 resultado = ps.executeQuery();
                 
                 while (resultado.next()) {
-                    Caixa caixa = new Caixa();
+                    Pedido pedido = new Pedido();
                     
-                    caixa.setId(resultado.getLong("id"));
-                    caixa.setAbertoEm(resultado.getDate("aberto_em"));
-                    caixa.setFechadoEm(resultado.getDate("fechado_em"));
-                    caixa.setEntradaDinheiro(resultado.getFloat("entrada_dinheiro"));
-                    caixa.setEntradaCartaoDebito(resultado.getFloat("entrada_cartao_debito"));
-                    caixa.setEntradaCartaoCredito(resultado.getFloat("entrada_cartao_credito"));
-                    caixa.setEntradaCheque(resultado.getFloat("entrada_cheque"));
-                    caixa.setTotalEntrada(resultado.getFloat("total_entrada"));
-                    caixa.setSaidaDinheiro(resultado.getFloat("saida_dinheiro"));
-                    caixa.setSaidaCheque(resultado.getFloat("saida_cheque"));
-                    caixa.setSaldoInicial(resultado.getFloat("saldo_inicial"));
-                    caixa.setSaldoFinal(resultado.getFloat("saldo_final"));
-                    caixa.setObservacao(resultado.getString("observacao"));
-                    caixa.setFuncionario(new FuncionarioDAO().buscar(resultado.getLong("funcionario_id")));
-                    caixas.add(caixa);
+                    pedido.setId(resultado.getLong("id"));
+                    pedido.setValorTotalProdutos(resultado.getFloat("valor_total_produtos"));
+                    pedido.setValorEntrega(resultado.getFloat("valor_entrega"));
+                    pedido.setValorTotal(resultado.getFloat("valor_total"));
+                    pedido.setTotalPago(resultado.getFloat("total_pago"));
+                    pedido.setTroco(resultado.getFloat("troco"));
+                    pedido.setTipo(resultado.getString("tipo"));
+                    pedido.setFormaDePagamento(resultado.getString("forma_de_pagamento"));
+                    pedido.setStatus(resultado.getString("status"));
+                    pedido.setFuncionario(new FuncionarioDAO().buscar(resultado.getLong("funcionario_id")));
+                    pedido.setCliente(new ClienteDAO().buscar(resultado.getLong("cliente_id")));
+                    pedido.setAbertoEm(resultado.getDate("aberto_em"));
+                    pedido.setFechadoEm(resultado.getDate("fechado_em"));
+                    pedido.setMesa(new MesaDAO().buscar(resultado.getInt("mesa_id")));
+                    pedido.setEndereco(new EnderecoDAO().buscar(resultado.getLong("endereco_id")));
+                     
+                    pedidos.add(pedido);
                 }
             }
             resultado.close();
@@ -104,12 +112,11 @@ public class PedidoDAO extends AbstractDAO{
             throw new RuntimeException(e);
         }
         
-        return caixas;
+        return pedidos;
     }
 
-    
-    public Caixa buscar(Long id){
-        Caixa caixa = null;
+    public Pedido buscar(Long id){
+        Pedido pedido = null;
 
         try {
             ResultSet resultado;
@@ -120,22 +127,23 @@ public class PedidoDAO extends AbstractDAO{
                 
                 resultado = ps.executeQuery();
                 while (resultado.next()) {
-                    caixa = new Caixa();  
+                    pedido = new Pedido();  
 
-                    caixa.setId(resultado.getLong("id"));
-                    caixa.setAbertoEm(resultado.getDate("aberto_em"));
-                    caixa.setFechadoEm(resultado.getDate("fechado_em"));
-                    caixa.setEntradaDinheiro(resultado.getFloat("entrada_dinheiro"));
-                    caixa.setEntradaCartaoDebito(resultado.getFloat("entrada_cartao_debito"));
-                    caixa.setEntradaCartaoCredito(resultado.getFloat("entrada_cartao_credito"));
-                    caixa.setEntradaCheque(resultado.getFloat("entrada_cheque"));
-                    caixa.setTotalEntrada(resultado.getFloat("total_entrada"));
-                    caixa.setSaidaDinheiro(resultado.getFloat("saida_dinheiro"));
-                    caixa.setSaidaCheque(resultado.getFloat("saida_cheque"));
-                    caixa.setSaldoInicial(resultado.getFloat("saldo_inicial"));
-                    caixa.setSaldoFinal(resultado.getFloat("saldo_final"));
-                    caixa.setObservacao(resultado.getString("observacao"));
-                    caixa.setFuncionario(new FuncionarioDAO().buscar(resultado.getLong("funcionario_id")));
+                    pedido.setId(resultado.getLong("id"));
+                    pedido.setValorTotalProdutos(resultado.getFloat("valor_total_produtos"));
+                    pedido.setValorEntrega(resultado.getFloat("valor_entrega"));
+                    pedido.setValorTotal(resultado.getFloat("valor_total"));
+                    pedido.setTotalPago(resultado.getFloat("total_pago"));
+                    pedido.setTroco(resultado.getFloat("troco"));
+                    pedido.setTipo(resultado.getString("tipo"));
+                    pedido.setFormaDePagamento(resultado.getString("forma_de_pagamento"));
+                    pedido.setStatus(resultado.getString("status"));
+                    pedido.setFuncionario(new FuncionarioDAO().buscar(resultado.getLong("funcionario_id")));
+                    pedido.setCliente(new ClienteDAO().buscar(resultado.getLong("cliente_id")));
+                    pedido.setAbertoEm(resultado.getDate("aberto_em"));
+                    pedido.setFechadoEm(resultado.getDate("fechado_em"));
+                    pedido.setMesa(new MesaDAO().buscar(resultado.getInt("mesa_id")));
+                    pedido.setEndereco(new EnderecoDAO().buscar(resultado.getLong("endereco_id")));
                 }
             }
             resultado.close();
@@ -143,6 +151,6 @@ public class PedidoDAO extends AbstractDAO{
             throw new RuntimeException(e);
         }
         
-        return caixa;
+        return pedido;
     }
 }

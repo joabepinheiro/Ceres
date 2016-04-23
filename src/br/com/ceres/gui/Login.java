@@ -12,7 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  *
@@ -33,7 +37,8 @@ public class Login extends javax.swing.JFrame {
         
         jComboBoxEmails.setModel(new DefaultComboBoxModel(new UsuarioDAO().listar().toArray()));
         
-        jPasswordFieldSenha.setText("123456");
+        jPasswordFieldSenha.setText("123456");             
+                
     }
 
     /**

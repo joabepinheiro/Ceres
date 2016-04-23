@@ -116,6 +116,10 @@ public class Pedido implements Serializable {
     public Date getAbertoEm() {
         return abertoEm;
     }
+    
+    public java.sql.Date getSqlDateAbertoEm() {
+        return new java.sql.Date(abertoEm.getTime());
+    }
 
     public void setAbertoEm(Date abertoEm) {
         this.abertoEm = abertoEm;
@@ -123,6 +127,10 @@ public class Pedido implements Serializable {
 
     public Date getFechadoEm() {
         return fechadoEm;
+    }
+    
+    public java.sql.Date getSqlDateFechadoEm() {
+        return new java.sql.Date(fechadoEm.getTime());
     }
 
     public void setFechadoEm(Date fechadoEm) {

@@ -106,7 +106,6 @@ public class CaixaDAO extends AbstractDAO{
         
         return caixas;
     }
-
     
     public Caixa buscar(Long id){
         Caixa caixa = null;
@@ -144,5 +143,19 @@ public class CaixaDAO extends AbstractDAO{
         }
         
         return caixa;
+    }
+    
+    public void deletar(Long id){
+          try {
+            ResultSet resultado;
+            try ( 
+                PreparedStatement ps = conexao.prepareStatement(DELETE)) {
+                ps.setLong(1, id);
+                resultado = ps.executeQuery();
+            }
+            resultado.close();
+          }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

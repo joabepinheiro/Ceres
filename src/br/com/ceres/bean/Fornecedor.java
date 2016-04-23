@@ -90,6 +90,12 @@ public class Fornecedor implements Serializable {
     public void setCadastradoEm(Date cadastradoEm) {
         this.cadastradoEm = cadastradoEm;
     }
+    
+  
+    public java.sql.Date getSqlDateCadastradoEm() {
+        return new java.sql.Date(this.cadastradoEm.getTime());
+    }
+
 
     public Collection<Produto> getProdutoCollection() {
         return produtoCollection;

@@ -112,4 +112,32 @@ public class UsuarioDAO extends AbstractDAO{
         }
         return result;
     }
+    
+    public Usuario buscar(Long id){
+        Usuario usuario = null;
+        try {
+            ResultSet resultado;
+
+            try ( 
+                PreparedStatement ps = conexao.prepareStatement(FIND_BY_ID)) {
+                ps.setLong(1, id);
+                
+                resultado = ps.executeQuery();
+                while (resultado.next()) {
+                    usuario = new Usuario();  
+                    usuario.setId(resultado.getLong("id"));
+                    usuario.setUsuario(resultado.getString("usuario"));
+                    usuario.setEmail(resultado.getString("email"));
+                    usuario.setSenha(resultado.getString("senha"));
+                    usuario.setAtivo(resultado.getString("ativo"));
+                    usuario.setTipo(resultado.getString("tipo"));
+                }
+            }
+            resultado.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return usuario;
+    }
+    
 }
