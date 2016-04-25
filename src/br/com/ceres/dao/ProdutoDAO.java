@@ -41,8 +41,9 @@ public class ProdutoDAO extends AbstractDAO{
                 ps.setString(3, produto.getDescricao());
                 ps.setString(4, produto.getCodigo());
                 ps.setBoolean(5, produto.getAtivo());
-                ps.setObject(6, produto.getFuncionario());
-                ps.setObject(7, produto.getCategoria());
+                ps.setObject(6, produto.getFuncionario().getId());
+                ps.setObject(7, produto.getCategoria().getId());
+                ps.setObject(8, produto.getId());
                 
                 ps.executeUpdate();
             }
@@ -87,6 +88,42 @@ public class ProdutoDAO extends AbstractDAO{
         return produtos;
     }
     
+     public List<Produto> buscarPor(String key, String value){
+        List<Produto> produtos = new ArrayList<>();
+
+        try {
+            ResultSet resultado;
+            //executa
+            try ( // prepared statement para inserção
+                 PreparedStatement ps = conexao.prepareStatement("SELECT * FROM produto WHERE "+key+" LIKE ?")) {
+                 ps.setString(1, "%"+value+"%");
+
+                //executa
+                resultado = ps.executeQuery();
+                while (resultado.next()) {
+                    
+                    Produto produto = new Produto();
+                    
+                    produto.setId(resultado.getLong("id"));
+                    produto.setPreco(resultado.getFloat("preco"));
+                    produto.setNome(resultado.getString("nome"));
+                    produto.setDescricao(resultado.getString("descricao"));
+                    produto.setCodigo(resultado.getString("codigo"));
+                    produto.setAtivo(resultado.getBoolean("ativo"));
+                    produto.setFuncionario(new FuncionarioDAO().buscar(resultado.getLong("funcionario_id")));
+                    produto.setCategoria(new CategoriaDAO().buscar(resultado.getInt("categoria_id")));
+                    
+                    produtos.add(produto);
+                }
+            }
+            resultado.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        
+        return produtos;
+    }
+     
      public Produto buscar(Long id){
         Produto produto = null;
 

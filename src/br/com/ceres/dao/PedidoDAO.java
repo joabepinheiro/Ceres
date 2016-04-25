@@ -1,19 +1,12 @@
 package br.com.ceres.dao;
 
-import br.com.ceres.bean.Caixa;
-import br.com.ceres.bean.Endereco;
-import br.com.ceres.bean.Funcionario;
-import br.com.ceres.bean.Mesa;
 import br.com.ceres.bean.Pedido;
-import br.com.ceres.bean.Usuario;
-import br.com.ceres.gui.Painel;
-import br.com.ceres.sessao.Sessao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class PedidoDAO extends AbstractDAO{
     
@@ -23,9 +16,9 @@ public class PedidoDAO extends AbstractDAO{
     private static final String INSERT      = "INSERT INTO pedido (valor_total_produtos, valor_entrega, valor_total, total_pago, troco, tipo, forma_de_pagamento, status, funcionario_id, cliente_id, aberto_em, fechado_em, mesa_id, endereco_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE      = "UPDATE pedido SET valor_total_produtos=?, valor_entrega=?, valor_total=?, total_pago=?, troco=?, tipo=?, forma_de_pagamento=?, status=?, funcionario_id=?, cliente_id=?, aberto_em=?, fechado_em=?, mesa_id=?, endereco_id=? WHERE id=?";
  
-    public void inserir(Pedido pedido ){
+    public Long inserir(Pedido pedido ){
         try {
-            try (PreparedStatement ps = conexao.prepareStatement(INSERT)) {
+            try (PreparedStatement ps = conexao.prepareStatement(INSERT,  Statement.RETURN_GENERATED_KEYS)) {
      
                 ps.setFloat(1, pedido.getValorTotalProdutos());
                 ps.setFloat(2, pedido.getValorEntrega());
@@ -35,14 +28,26 @@ public class PedidoDAO extends AbstractDAO{
                 ps.setString(6, pedido.getTipo());
                 ps.setString(7, pedido.getFormaDePagamento());
                 ps.setString(8, pedido.getStatus());
-                ps.setObject(9, pedido.getFuncionario());
+                ps.setObject(9, pedido.getFuncionario().getId());
                 ps.setObject(10, pedido.getCliente());
                 ps.setDate(11, pedido.getSqlDateAbertoEm());
                 ps.setDate(12, pedido.getSqlDateFechadoEm());
                 ps.setObject(13, pedido.getMesa());
                 ps.setObject(14, pedido.getEndereco());
                 
-                ps.execute();
+       
+                // executa
+                ps.executeUpdate();
+                ResultSet resultSet = ps.getGeneratedKeys();
+                int id = 0;
+
+                if(resultSet.next()){
+                    id = resultSet.getInt(1);
+                }
+
+                ps.close();
+
+                return (long) id;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -60,12 +65,13 @@ public class PedidoDAO extends AbstractDAO{
                 ps.setString(6, pedido.getTipo());
                 ps.setString(7, pedido.getFormaDePagamento());
                 ps.setString(8, pedido.getStatus());
-                ps.setObject(9, pedido.getFuncionario());
+                ps.setObject(9, pedido.getFuncionario().getId());
                 ps.setObject(10, pedido.getCliente());
                 ps.setDate(11, pedido.getSqlDateAbertoEm());
                 ps.setDate(12, pedido.getSqlDateFechadoEm());
                 ps.setObject(13, pedido.getMesa());
-                ps.setObject(14, pedido.getEndereco());
+                ps.setObject(14, pedido.getEndereco().getId());
+                ps.setLong(15, pedido.getId());
                 
                 ps.executeUpdate();
             }

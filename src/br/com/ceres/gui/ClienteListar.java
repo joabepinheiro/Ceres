@@ -5,7 +5,9 @@
  */
 package br.com.ceres.gui;
 
+import br.com.ceres.bean.Cliente;
 import br.com.ceres.bean.Produto;
+import br.com.ceres.dao.ClienteDAO;
 import br.com.ceres.dao.ProdutoDAO;
 import java.awt.Dimension;
 import java.util.List;
@@ -18,30 +20,35 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author joabe_000
  */
-public class ProdutoListar extends javax.swing.JInternalFrame {
+public class ClienteListar extends javax.swing.JInternalFrame {
 
     JDesktopPane jDesktopPane;
     /**
      * Creates new form ProdutoListar
      * @param jDesktopPane
      */
-    public ProdutoListar(JDesktopPane jDesktopPane) {
+    public ClienteListar(JDesktopPane jDesktopPane) {
         this.jDesktopPane = jDesktopPane;
         
-        initComponents(); 
+        initComponents();
         
-        ProdutoDAO produtoDAO = new ProdutoDAO();
-        List<Produto> produtos = produtoDAO.listar();
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(15);
+        jTable1.getColumnModel().getColumn(1).setPreferredWidth(140); 
+        jTable1.getColumnModel().getColumn(2).setPreferredWidth(140); 
+        jTable1.getColumnModel().getColumn(3).setPreferredWidth(350);
+
+
+        ClienteDAO clienteDAO = new ClienteDAO();
+        List<Cliente> clientes = clienteDAO.listar();
         
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel(); 
         
-        for (Produto produto : produtos) {
-            Object[] linha = new Object[5];
-            linha[0] = produto.getId();
-            linha[1] = produto.getCodigo();
-            linha[2] = produto.getCategoria();
-            linha[3] = produto.getNome();
-            linha[4] = produto.getPreco();
+        for (Cliente cliente : clientes) {
+            Object[] linha = new Object[4];
+            linha[0] = cliente.getId();
+            linha[1] = cliente.getNome() + " " + cliente.getSobrenome();
+            linha[2] = cliente.getTelefones();
+            linha[3] = cliente.getEnderecoId() + " " + cliente.getEnderecoNumero();
             model.addRow(linha);  
         }
     }
@@ -68,7 +75,7 @@ public class ProdutoListar extends javax.swing.JInternalFrame {
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
         setClosable(true);
-        setTitle("Produtos");
+        setTitle("Clientes");
         setLayer(9);
         setVisible(true);
 
@@ -79,7 +86,7 @@ public class ProdutoListar extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Cód. do sistema", "Cód. de busca", "Categoria", "Produto", "Preço"
+                "Id", "Nome", "Telefones", "Endereço"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -123,7 +130,7 @@ public class ProdutoListar extends javax.swing.JInternalFrame {
             }
         });
 
-        jComboBoxCampoDeBusca.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "nome", "preco" }));
+        jComboBoxCampoDeBusca.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "nome", "cpf" }));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("por");
@@ -201,14 +208,14 @@ public class ProdutoListar extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextFieldCampoDeBuscaActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-       new ProdutoCadastrar(jDesktopPane).setVisible(true);
+       new ClienteCadastrar(jDesktopPane).setVisible(true);
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
         if(jTable1.getSelectedRow() != -1){
             Long id = (Long) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
-            Produto produto = new ProdutoDAO().buscar(id);
-            new  ProdutoEditar(jDesktopPane, produto).setVisible(true);
+            Cliente cliente = new ClienteDAO().buscar(id);
+            new  ClienteEditar(jDesktopPane, cliente).setVisible(true);
         }
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
@@ -217,23 +224,19 @@ public class ProdutoListar extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextFieldCampoDeBuscaInputMethodTextChanged
 
     private void jTextFieldCampoDeBuscaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldCampoDeBuscaKeyReleased
-        ProdutoDAO produtoDAO = new ProdutoDAO();
-        List<Produto> produtos = produtoDAO.buscarPor(jComboBoxCampoDeBusca.getSelectedItem().toString(), jTextFieldCampoDeBusca.getText());
-        System.out.println(produtos.size());
+        ClienteDAO clienteDAO = new ClienteDAO();
+        List<Cliente> clientes = clienteDAO.buscarPor(jComboBoxCampoDeBusca.getSelectedItem().toString(), jTextFieldCampoDeBusca.getText());
+        System.out.println(clientes.size());
         
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel(); 
         model.setRowCount(0);
         
-        for (Produto produto : produtos) {
-            System.out.println(produto.getId());
-            System.out.println(produto.getNome());
-            System.out.println(produto.getCategoria());
-            Object[] linha = new Object[5];
-            linha[0] = produto.getId();
-            linha[1] = produto.getCodigo();
-            linha[2] = produto.getCategoria();
-            linha[3] = produto.getNome();
-            linha[4] = produto.getPreco();
+        for (Cliente cliente : clientes) {
+            Object[] linha = new Object[4];
+            linha[0] = cliente.getId();
+            linha[1] = cliente.getNome() + " "+ cliente.getSobrenome();
+            linha[2] = cliente.getTelefones();
+            linha[3] = cliente.getEnderecoId();
             model.addRow(linha);  
         }
     }//GEN-LAST:event_jTextFieldCampoDeBuscaKeyReleased

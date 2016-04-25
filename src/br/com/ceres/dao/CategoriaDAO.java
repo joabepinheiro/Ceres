@@ -15,15 +15,14 @@ public class CategoriaDAO extends AbstractDAO{
     private static final String DELETE = "DELETE FROM categoria WHERE id=?";
     private static final String FIND_BY_ID = "SELECT * FROM categoria WHERE id=?";
     private static final String FIND_ALL = "SELECT * FROM categoria ORDER BY id";
-    private static final String INSERT = "INSERT INTO categoria (nome, pai) VALUES (?, ?)";
-    private static final String UPDATE = "UPDATE categoria SET nome=?, pai=? WHERE id=?";
+    private static final String INSERT = "INSERT INTO categoria (nome) VALUES (?, ?)";
+    private static final String UPDATE = "UPDATE categoria SET nome=? WHERE id=?";
  
     public void inserir(Categoria categoria ){
         try {
             try (PreparedStatement ps = conexao.prepareStatement(INSERT)) {
                 ps.setString(1, categoria.getNome());
-                ps.setObject(2, categoria.getCategoria());
-                
+
                 ps.execute();
             }
         } catch (SQLException e) {
@@ -35,8 +34,7 @@ public class CategoriaDAO extends AbstractDAO{
         try {
             try (PreparedStatement ps = conexao.prepareStatement(UPDATE)) {
                 ps.setString(1, categoria.getNome());
-                ps.setObject(2, categoria.getCategoria());
-                
+
                 ps.executeUpdate();
             }
             System.out.println("Categoria com id " + categoria.getId() + " foi atualizado com sucesso: " + categoria.toString());
@@ -62,8 +60,7 @@ public class CategoriaDAO extends AbstractDAO{
                     
                     categoria.setId(resultado.getInt("id"));
                     categoria.setNome(resultado.getString("nome"));
-                    categoria.setCategoria((Categoria) resultado.getObject("pai"));
-                    
+                   
                     categorias.add(categoria);
                 }
             }

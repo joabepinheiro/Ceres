@@ -16,7 +16,6 @@ public class Categoria implements Serializable {
     private String nome;
     private Collection<Produto> produtoCollection;
     private Collection<Categoria> categoriaCollection;
-    private Categoria categoria;
 
     public Categoria() {
     }
@@ -60,14 +59,6 @@ public class Categoria implements Serializable {
 
     public void setCategoriaCollection(Collection<Categoria> categoriaCollection) {
         this.categoriaCollection = categoriaCollection;
-    }
-
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
     }
 
     @Override

@@ -196,6 +196,7 @@ public class ProdutoCadastrar extends javax.swing.JFrame {
             //Inserir o novo produto
             Produto produto = new Produto();
             produto.setNome(jTextFieldNome.getText());
+            produto.setCodigo(jTextField1.getText());
             produto.setDescricao(jTextAreaDescricao.getText());
             produto.setPreco(Float.parseFloat(jTextFieldPreco.getText()));
             produto.setCategoria((Categoria) jComboBoxCategoria.getSelectedItem());

@@ -6,6 +6,8 @@
 package br.com.ceres.bean;
 
 import java.io.Serializable;
+import java.util.AbstractCollection;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -26,13 +28,17 @@ public class Pedido implements Serializable {
     private Mesa mesa;
     private Cliente cliente;
     private Funcionario funcionario;
-    private Collection<PedidoHasProduto> pedidoHasProdutoCollection;
+    private String enderecoComplemento;
+    private String enderecoReferencia;
+    private String enderecoNumero;
+    private Collection<PedidoHasProduto> pedidoHasProdutoCollection = new ArrayList<PedidoHasProduto>();
 
     public Pedido() {
+      
     }
 
     public Pedido(Long id) {
-        this.id = id;
+        this.id = id;  
     }
 
     public Pedido(Long id, float valorTotalProdutos, String formaDePagamento) {
@@ -74,6 +80,8 @@ public class Pedido implements Serializable {
     }
 
     public Float getTotalPago() {
+        if(totalPago == null)
+            return (float) 0;
         return totalPago;
     }
 
@@ -130,11 +138,22 @@ public class Pedido implements Serializable {
     }
     
     public java.sql.Date getSqlDateFechadoEm() {
+        if(fechadoEm == null){
+            return null;
+        }
         return new java.sql.Date(fechadoEm.getTime());
     }
 
     public void setFechadoEm(Date fechadoEm) {
         this.fechadoEm = fechadoEm;
+    }
+    
+    public void getStringDateAbertoEm(){
+     
+    }
+    
+    public void getStringDateFechadoEm(){
+
     }
 
     public Endereco getEndereco() {
@@ -175,6 +194,44 @@ public class Pedido implements Serializable {
 
     public void setPedidoHasProdutoCollection(Collection<PedidoHasProduto> pedidoHasProdutoCollection) {
         this.pedidoHasProdutoCollection = pedidoHasProdutoCollection;
+    }
+    
+    public String getPago(){
+        return (totalPago != 0) ? "sim" : "não";
+    }
+
+    public String getEnderecoComplemento() {
+        return enderecoComplemento;
+    }
+
+    public void setEnderecoComplemento(String enderecoComplemento) {
+        this.enderecoComplemento = enderecoComplemento;
+    }
+
+    public String getEnderecoReferencia() {
+        return enderecoReferencia;
+    }
+
+    public void setEnderecoReferencia(String enderecoReferencia) {
+        this.enderecoReferencia = enderecoReferencia;
+    }
+
+    public String getEnderecoNumero() {
+        return enderecoNumero;
+    }
+
+    public void setEnderecoNumero(String enderecoNumero) {
+        this.enderecoNumero = enderecoNumero;
+    }
+    
+    
+    public float getValorTotalDosProdutos(){
+        float total = 0;
+        
+        for (PedidoHasProduto pedidoHasProdutoCollection1 : pedidoHasProdutoCollection) {
+            total+= pedidoHasProdutoCollection1.getSubTotal();
+        }
+        return total;
     }
 
     @Override

@@ -16,6 +16,7 @@ public class EnderecoDAO extends AbstractDAO{
     
     private static final String DELETE = "DELETE FROM endereco WHERE id=?";
     private static final String FIND_BY_ID = "SELECT * FROM endereco WHERE id=?";
+    private static final String FIND = "SELECT * FROM endereco WHERE cep LIKE ? AND logradouro LIKE ? AND bairro LIKE ? AND cidade LIKE ? AND estado LIKE ?";
     private static final String FIND_ALL = "SELECT * FROM endereco ORDER BY id";
     private static final String INSERT = "INSERT INTO endereco(logradouro, bairro, cidade, estado) VALUES (?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE endereco SET logradouro=?, bairro=?, cidade=?, estado=? WHERE id=?";
@@ -108,4 +109,38 @@ public class EnderecoDAO extends AbstractDAO{
         return endereco;
     }
     
+    public List<Endereco> buscarEnderecos(String cep, String logradouro, String bairro, String cidade, String estado){
+        List<Endereco> enderecos = new ArrayList<>();
+
+        try {
+            ResultSet resultado;
+            try ( 
+                PreparedStatement ps = conexao.prepareStatement(FIND)) {
+                ps.setString(1,"%"+cep+"%" );
+                ps.setString(2, "%"+logradouro+"%" );
+                ps.setString(3, "%"+bairro+"%");
+                ps.setString(4, "%"+cidade+"%");
+                ps.setString(5, "%"+estado+"%");
+                
+                resultado = ps.executeQuery();
+                while (resultado.next()) {
+                    Endereco endereco = new Endereco();
+                    
+                    endereco.setId(resultado.getLong("id"));
+                    endereco.setLogradouro(resultado.getString("logradouro"));
+                    endereco.setBairro(resultado.getString("bairro"));
+                    endereco.setCidade(resultado.getString("cidade"));
+                    endereco.setEstado(resultado.getString("estado"));
+                    endereco.setCep(resultado.getString("cep"));
+                    
+                    enderecos.add(endereco);
+                }
+            }
+            resultado.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        
+        return enderecos;
+    }
 }

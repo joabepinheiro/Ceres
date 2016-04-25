@@ -11,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
@@ -64,7 +65,7 @@ public class Validador {
           if(jComponent instanceof JComboBox){
             
              JComboBox jComboBox = (JComboBox) jComponent;
-              System.out.println("jdgjgd" + jComboBox.getSelectedItem());
+
             if(jComboBox.getSelectedItem() == null){
                 jComboBox.setBorder(BorderFactory.createLineBorder(Color.red));
                 jLabel.setForeground (Color.red);
@@ -75,6 +76,22 @@ public class Validador {
                 jLabel.setText("");
             }
          }
+          
+          if(jComponent instanceof JList){
+            
+             JList jList = (JList) jComponent;
+
+            if(jList.getSelectedValue() == null){
+                jList.setBorder(BorderFactory.createLineBorder(Color.red));
+                jLabel.setForeground (Color.red);
+                jLabel.setText("Esse campo é obrigatório");
+                formValido = false;
+            }else{
+                jList.setBorder(null);
+                jLabel.setText("");
+            }
+         }
+          
     }
     
     

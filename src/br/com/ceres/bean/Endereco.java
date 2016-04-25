@@ -19,6 +19,7 @@ public class Endereco implements Serializable {
     private String bairro;
     private String cidade;
     private String estado;
+    private String cep;
    
     
     private Collection<Cliente> clienteCollection;
@@ -79,6 +80,15 @@ public class Endereco implements Serializable {
         this.estado = estado;
     }
 
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+    
+  
     @XmlTransient
     public Collection<Cliente> getClienteCollection() {
         return clienteCollection;
@@ -119,7 +129,7 @@ public class Endereco implements Serializable {
 
     @Override
     public String toString() {
-        return "Endereco[ id=" + id + " ]";
+        return logradouro + ", " + bairro + " - " + cidade + " - " + estado;
     }
     
 }

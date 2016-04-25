@@ -35,8 +35,8 @@ public class ProdutoEditar extends javax.swing.JFrame {
         
         this.jDesktopPane = jDesktopPane;
         this.produto = produto;
-        this.populate();
         jComboBoxCategoria.setModel(new DefaultComboBoxModel(new CategoriaDAO().listar().toArray()));
+        this.populate();
 
     }
 
@@ -51,7 +51,7 @@ public class ProdutoEditar extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextFieldCodigo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jTextFieldNome = new javax.swing.JTextField();
         jComboBoxCategoria = new javax.swing.JComboBox();
@@ -68,7 +68,7 @@ public class ProdutoEditar extends javax.swing.JFrame {
         jToggleButton2 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Novo Produto");
+        setTitle("Editar Produto");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -115,7 +115,7 @@ public class ProdutoEditar extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextFieldCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -152,7 +152,7 @@ public class ProdutoEditar extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -209,7 +209,7 @@ public class ProdutoEditar extends javax.swing.JFrame {
         if(formValido){
            this.atualiza();
            this. atualizaJDesktopPane();
-           JOptionPane.showMessageDialog(null, produto.getNome() + " cadastrado com sucesso");
+           JOptionPane.showMessageDialog(null, produto.getNome() + " atualizado com sucesso");
 
            this.setVisible(false);
            this.dispose();
@@ -218,39 +218,45 @@ public class ProdutoEditar extends javax.swing.JFrame {
 
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
 
-        new ProdutoDAO().deletar(produto.getId());
-        this.atualizaJDesktopPane();
-        JOptionPane.showMessageDialog(null, " Registro deletado com sucesso");
+        int comfirm = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir esse produto ?");
+        if(comfirm == 0){
+            new ProdutoDAO().deletar(produto.getId());
+            this.atualizaJDesktopPane();
+            JOptionPane.showMessageDialog(null, " Registro deletado com sucesso");
+            this.setVisible(false);
+            this.dispose();
+        }
+        
             
-        this.setVisible(false);
-        this.dispose();
         
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
     private void populate(){
-        jTextField1.setText(produto.getCodigo());
+        jTextFieldCodigo.setText(produto.getCodigo());
         jTextFieldNome.setText(produto.getNome());
+        jComboBoxCategoria.setSelectedItem(produto.getCategoria());
         jTextAreaDescricao.setText(produto.getDescricao());
         jTextFieldPreco.setText(String.valueOf(produto.getPreco()));
    }
-    
-    public void atualizaJDesktopPane(){
+  
+   public void atualizaJDesktopPane(){
         ProdutoListar produtoListar = new ProdutoListar(jDesktopPane);
         produtoListar.setVisible(true);
         jDesktopPane.removeAll();
         jDesktopPane.add(produtoListar);
-    }
+   }
     
-    public void atualiza(){
+   public void atualiza(){
         produto.setNome(jTextFieldNome.getText());
         produto.setDescricao(jTextAreaDescricao.getText());
+        produto.setCodigo(jTextFieldCodigo.getText());
         produto.setPreco(Float.parseFloat(jTextFieldPreco.getText()));
         produto.setCategoria((Categoria) jComboBoxCategoria.getSelectedItem());
         produto.setFuncionario(Sessao.getInstance().getFuncionario());
 
         ProdutoDAO produtoDAO = new ProdutoDAO();
         produtoDAO.atualizar(produto);
-    }
+   }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox jComboBoxCategoria;
     private javax.swing.JLabel jLabel1;
@@ -264,7 +270,7 @@ public class ProdutoEditar extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextAreaDescricao;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextFieldCodigo;
     private javax.swing.JTextField jTextFieldNome;
     private javax.swing.JTextField jTextFieldPreco;
     private javax.swing.JToggleButton jToggleButton1;

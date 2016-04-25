@@ -71,7 +71,12 @@ public class PedidoHasProduto implements Serializable {
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
     }
-
+    
+    public float getSubTotal(){
+        return (float) quantidade * produto.getPreco();
+    }
+    
+   
     @Override
     public int hashCode() {
         int hash = 0;

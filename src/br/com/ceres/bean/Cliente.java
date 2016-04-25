@@ -126,6 +126,11 @@ public class Cliente implements Serializable {
         return telefone3;
     }
 
+    
+    public String getTelefones(){
+        return telefone1 + " " + telefone2 + " " + telefone3;
+    }
+    
     public void setTelefone3(String telefone3) {
         this.telefone3 = telefone3;
     }
