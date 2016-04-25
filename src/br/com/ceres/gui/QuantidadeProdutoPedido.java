@@ -74,6 +74,7 @@ public class QuantidadeProdutoPedido extends javax.swing.JFrame {
         jSpinnerQuantidade = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Adicionar produto ao pedido");
         setAlwaysOnTop(true);
 
         jLabelNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N

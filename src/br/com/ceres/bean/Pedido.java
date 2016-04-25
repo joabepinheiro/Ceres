@@ -6,6 +6,9 @@
 package br.com.ceres.bean;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,8 +25,8 @@ public class Pedido implements Serializable {
     private String tipo;
     private String formaDePagamento;
     private String status;
-    private Date abertoEm;
-    private Date fechadoEm;
+    private Timestamp abertoEm;
+    private Timestamp fechadoEm;
     private Endereco endereco;
     private Mesa mesa;
     private Cliente cliente;
@@ -129,7 +132,7 @@ public class Pedido implements Serializable {
         return new java.sql.Date(abertoEm.getTime());
     }
 
-    public void setAbertoEm(Date abertoEm) {
+    public void setAbertoEm(Timestamp abertoEm) {
         this.abertoEm = abertoEm;
     }
 
@@ -144,16 +147,40 @@ public class Pedido implements Serializable {
         return new java.sql.Date(fechadoEm.getTime());
     }
 
-    public void setFechadoEm(Date fechadoEm) {
+    public void setFechadoEm(Timestamp fechadoEm) {
         this.fechadoEm = fechadoEm;
     }
     
-    public void getStringDateAbertoEm(){
-     
+    public Object getStringDateAbertoEm(){
+      DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+      if(this.abertoEm == null){
+          return null;
+      }
+      return dateFormat.format(this.abertoEm);
     }
     
-    public void getStringDateFechadoEm(){
-
+    public Object getStringDateFechadoEm(){
+      DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+      if(this.fechadoEm == null){
+          return null;
+      }
+      return dateFormat.format(this.fechadoEm);
+    }
+    
+    public String getDataAbertoEm(){
+      DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+      if(this.abertoEm == null){
+          return null;
+      }
+      return dateFormat.format(this.abertoEm);
+    }
+    
+     public Object getDataFechadoEm(){
+      DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+      if(this.fechadoEm == null){
+          return null;
+      }
+      return dateFormat.format(this.fechadoEm);
     }
 
     public Endereco getEndereco() {

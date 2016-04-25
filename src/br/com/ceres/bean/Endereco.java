@@ -129,7 +129,7 @@ public class Endereco implements Serializable {
 
     @Override
     public String toString() {
-        return logradouro + ", " + bairro + " - " + cidade + " - " + estado;
+        return logradouro + ", " + bairro ;
     }
     
 }

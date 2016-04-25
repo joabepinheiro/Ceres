@@ -30,8 +30,8 @@ public class PedidoDAO extends AbstractDAO{
                 ps.setString(8, pedido.getStatus());
                 ps.setObject(9, pedido.getFuncionario().getId());
                 ps.setObject(10, pedido.getCliente());
-                ps.setDate(11, pedido.getSqlDateAbertoEm());
-                ps.setDate(12, pedido.getSqlDateFechadoEm());
+                ps.setObject(11, pedido.getStringDateAbertoEm());
+                ps.setObject(12, pedido.getStringDateFechadoEm());
                 ps.setObject(13, pedido.getMesa());
                 ps.setObject(14, pedido.getEndereco());
                 
@@ -67,8 +67,8 @@ public class PedidoDAO extends AbstractDAO{
                 ps.setString(8, pedido.getStatus());
                 ps.setObject(9, pedido.getFuncionario().getId());
                 ps.setObject(10, pedido.getCliente());
-                ps.setDate(11, pedido.getSqlDateAbertoEm());
-                ps.setDate(12, pedido.getSqlDateFechadoEm());
+                ps.setObject(11, pedido.getStringDateAbertoEm());
+                ps.setObject(12, pedido.getStringDateFechadoEm());
                 ps.setObject(13, pedido.getMesa());
                 ps.setObject(14, pedido.getEndereco().getId());
                 ps.setLong(15, pedido.getId());
@@ -105,12 +105,13 @@ public class PedidoDAO extends AbstractDAO{
                     pedido.setStatus(resultado.getString("status"));
                     pedido.setFuncionario(new FuncionarioDAO().buscar(resultado.getLong("funcionario_id")));
                     pedido.setCliente(new ClienteDAO().buscar(resultado.getLong("cliente_id")));
-                    pedido.setAbertoEm(resultado.getDate("aberto_em"));
-                    pedido.setFechadoEm(resultado.getDate("fechado_em"));
+                    pedido.setAbertoEm(resultado.getTimestamp("aberto_em"));
+                    pedido.setFechadoEm(resultado.getTimestamp("fechado_em"));
                     pedido.setMesa(new MesaDAO().buscar(resultado.getInt("mesa_id")));
                     pedido.setEndereco(new EnderecoDAO().buscar(resultado.getLong("endereco_id")));
                      
                     pedidos.add(pedido);
+                    
                 }
             }
             resultado.close();
@@ -146,8 +147,8 @@ public class PedidoDAO extends AbstractDAO{
                     pedido.setStatus(resultado.getString("status"));
                     pedido.setFuncionario(new FuncionarioDAO().buscar(resultado.getLong("funcionario_id")));
                     pedido.setCliente(new ClienteDAO().buscar(resultado.getLong("cliente_id")));
-                    pedido.setAbertoEm(resultado.getDate("aberto_em"));
-                    pedido.setFechadoEm(resultado.getDate("fechado_em"));
+                    pedido.setAbertoEm(resultado.getTimestamp("aberto_em"));
+                    pedido.setFechadoEm(resultado.getTimestamp("fechado_em"));
                     pedido.setMesa(new MesaDAO().buscar(resultado.getInt("mesa_id")));
                     pedido.setEndereco(new EnderecoDAO().buscar(resultado.getLong("endereco_id")));
                 }
@@ -158,5 +159,17 @@ public class PedidoDAO extends AbstractDAO{
         }
         
         return pedido;
+    }
+    
+    public void deletar(Long id){
+          try {
+            try ( 
+                PreparedStatement ps = conexao.prepareStatement(DELETE)) {
+                ps.setLong(1, id);
+                ps.executeUpdate();
+            }
+          }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

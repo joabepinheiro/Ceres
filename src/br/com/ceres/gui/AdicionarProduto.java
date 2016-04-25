@@ -67,6 +67,7 @@ public class AdicionarProduto extends javax.swing.JFrame {
         jComboBoxCampoDeBusca = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Selecionar produto");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -107,7 +108,7 @@ public class AdicionarProduto extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("por");
 
-        jComboBoxCampoDeBusca.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "nome", "preco" }));
+        jComboBoxCampoDeBusca.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "nome", "codigo", "preco" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

@@ -36,13 +36,12 @@ public class PedidosListar extends javax.swing.JInternalFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel(); 
         
         for (Pedido pedido : pedidos) {
-            Object[] linha = new Object[7];
+            Object[] linha = new Object[5];
             linha[0] = pedido.getId();
-            linha[1] = pedido.getAbertoEm();
-            linha[2] = pedido.getFechadoEm();
+            linha[1] = pedido.getDataAbertoEm();
+            linha[2] = pedido.getDataFechadoEm();
             linha[3] = pedido.getEndereco();
-            linha[4] = (pedido.getCliente() == null) ? "" : pedido.getCliente().getTelefones();
-            linha[5] = pedido.getValorTotal();
+            linha[4] = pedido.getValorTotal();
             model.addRow(linha);  
         }
     }
@@ -65,6 +64,8 @@ public class PedidosListar extends javax.swing.JInternalFrame {
         jToggleButton1 = new javax.swing.JToggleButton();
         jToggleButton2 = new javax.swing.JToggleButton();
 
+        setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pedidos");
 
@@ -75,7 +76,7 @@ public class PedidosListar extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Pedido", "Aberto em", "Fechado em", "Endereco", "Telefone", "Total"
+                "Pedido", "Aberto em", "Fechado em", "Endereco", "Total"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -116,7 +117,7 @@ public class PedidosListar extends javax.swing.JInternalFrame {
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 344, Short.MAX_VALUE)
                 .addComponent(jToggleButton1)
                 .addGap(18, 18, 18)
                 .addComponent(jToggleButton2)
@@ -138,18 +139,18 @@ public class PedidosListar extends javax.swing.JInternalFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
                 .addGap(22, 22, 22))
         );
 
